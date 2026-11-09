@@ -7,4 +7,14 @@
 
      Unlike the baseline, this file may grow, but every entry is a reviewed decision. -->
 <FindBugsFilter>
+  <!-- D1: Turned off EI_EXPOSE_REP and EI_EXPOSE_REP2 for the whole project.
+       Most of the 219 findings are on purpose. 144 are JPA entities, and Hibernate
+       needs the entity to keep the same collection so it can track changes. About 29
+       are Spring controllers/services storing the beans injected into their constructors,
+       which is just how dependency injection works. Copying these would change how the
+       app behaves. Downside: the DTO records (mostly in .dto packages) don't get checked
+       anymore. If we want that back later, we could turn the rule on just for those. -->
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+  </Match>
 </FindBugsFilter>
