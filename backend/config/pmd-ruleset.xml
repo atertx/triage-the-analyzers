@@ -21,5 +21,11 @@
              when the app runs. Making us comment all 30 just repeats "required by JPA". -->
         <exclude name="UncommentedEmptyConstructor"/>
         <exclude name="UnnecessaryConstructor"/>
+        <!-- D4: Turned off GuardLogStatement. Project Pulse logs through SLF4J with {} placeholders,
+             so the message is only built when that level is on. The arguments in all 4 findings are
+             cheap getters (getEmail(), size(), getName()), and two are error logs that are always on.
+             Wrapping each call in an isXEnabled() check adds clutter for almost no savings.
+             Downside: an expensive argument added later will not be flagged. -->
+        <exclude name="GuardLogStatement"/>
     </rule>
 </ruleset>
