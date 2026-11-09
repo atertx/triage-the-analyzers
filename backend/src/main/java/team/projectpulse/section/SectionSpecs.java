@@ -6,6 +6,10 @@ import java.util.Locale;
 
 public class SectionSpecs {
 
+    private SectionSpecs() {
+        // Only static factory methods; not meant to be instantiated.
+    }
+
     public static Specification<Section> containsSectionName(String providedSectionName) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("sectionName")), "%" + providedSectionName.toLowerCase(Locale.ROOT) + "%");
