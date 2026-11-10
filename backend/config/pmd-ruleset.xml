@@ -13,5 +13,19 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
     <description>PMD quickstart, with Project Pulse's decisions.</description>
     <rule ref="rulesets/java/quickstart.xml">
+            <!-- D2: Turned off UncommentedEmptyConstructor and UnnecessaryConstructor.
+             Almost all of these empty constructors are on JPA entities, and Hibernate needs
+             a no-arg constructor to create objects from database rows. Deleting them (the fix
+             UnnecessaryConstructor wants) breaks an entity as soon as someone adds another
+             constructor, because Java stops generating the empty one, and that only fails
+             when the app runs. Making us comment all 30 just repeats "required by JPA". -->
+        <exclude name="UncommentedEmptyConstructor"/>
+        <exclude name="UnnecessaryConstructor"/>
+        <!-- D4: Turned off GuardLogStatement. Project Pulse logs through SLF4J with {} placeholders,
+             so the message is only built when that level is on. The arguments in all 4 findings are
+             cheap getters (getEmail(), size(), getName()), and two are error logs that are always on.
+             Wrapping each call in an isXEnabled() check adds clutter for almost no savings.
+             Downside: an expensive argument added later will not be flagged. -->
+        <exclude name="GuardLogStatement"/>
     </rule>
 </ruleset>
